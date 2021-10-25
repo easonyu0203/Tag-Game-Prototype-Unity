@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.3587269, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -289,6 +289,8 @@ MonoBehaviour:
     AllowRuntimeSceneChanges: 0
     NetworkPrefabs:
     - Prefab: {fileID: 1630132662443596679, guid: 584e321e763491247b003ddd18b7924a, type: 3}
+      PlayerPrefab: 0
+    - Prefab: {fileID: 3757558852662427111, guid: 6cef1014a85cf3a43b2ca0d0b2dd9819, type: 3}
       PlayerPrefab: 0
     PlayerPrefabHash:
       id: 0

@@ -23,23 +23,16 @@ namespace Networking{
 
 
             NetworkEvent.Instance.ServerEvent_OnClientDisconnect += PlayerDataDic_HandleDisconnect;
-            PlayerData_dic.OnDicChange += OnPlayerDataDicChange;
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
 
-            PlayerData_dic.OnDicChange -= OnPlayerDataDicChange;
             if(NetworkEvent.Instance){
                 NetworkEvent.Instance.ServerEvent_OnClientDisconnect -= PlayerDataDic_HandleDisconnect;
 
             }
-        }
-
-        private void OnPlayerDataDicChange()
-        {
-
         }
 
         private void PlayerDataDic_HandleDisconnect(ulong clientId)

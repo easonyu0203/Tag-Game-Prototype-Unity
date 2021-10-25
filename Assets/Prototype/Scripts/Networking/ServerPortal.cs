@@ -76,7 +76,7 @@ namespace Networking{
                     if(clientId == ClientId){
                         GameObject clientPlayerRoot = Instantiate(_playerRoot, _playerRootsTransform);
                         clientPlayerRoot.GetComponent<NetworkObject>().SpawnAsPlayerObject(ClientId);
-                        clientPlayerRoot.GetComponent<Player.PlayerData>().InitByConnectionData(connectionData);
+                        clientPlayerRoot.GetComponent<Player.PlayerData>().InitByConnectionData(clientId, connectionData);
 
                         // register to serverOnlyData
                         ServerOnlyData.Instance.PlayerData_dic.Add(ClientId, clientPlayerRoot.GetComponent<Player.PlayerData>());
