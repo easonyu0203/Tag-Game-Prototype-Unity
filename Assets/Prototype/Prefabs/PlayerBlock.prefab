@@ -413,9 +413,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _displayPlayerData: {fileID: 0}
-  _state: 0
+  State:
+    m_InternalValue: 0
   _waitForPlayerText: {fileID: 3757558852983544962}
   _displayPlayerDataUI: {fileID: 3757558852627500964}
+  _background: {fileID: 3757558852925232974}
   _nameText: {fileID: 3757558852142445583}
   _typeText: {fileID: 3757558852989178358}
   _isReadyText: {fileID: 3757558853719824460}
@@ -782,7 +784,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.65968215, b: 0.4377358, a: 1}
+  m_Color: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

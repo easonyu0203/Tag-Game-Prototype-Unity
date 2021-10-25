@@ -14,11 +14,21 @@ namespace Player{
     /// </summary>
     public class PlayerData : NetworkBehaviour
     {
+        /// <summary>
+        /// populate on server and user, aim for geting playerData easier
+        /// </summary>
+        static private Dictionary<ulong, PlayerData> _playerData_dic = new Dictionary<ulong, PlayerData>();
+        static public event Action<PlayerData> OnLocalPlayerDataReady;
+
         public NetworkVariableULong ClientId = new NetworkVariableULong(0);
         public NetworkVariableString Name = new NetworkVariableString("[No Name]");
-        public NetworkVariable<TagTypeEnum> TagType = new NetworkVariable<TagTypeEnum>(TagTypeEnum.None);
-        public NetworkVariableBool IsLobbyHost = new NetworkVariableBool(false);
-        public NetworkVariableBool isReady = new NetworkVariableBool(false);
+        public NetworkVariable<TagTypeEnum> TagType = new NetworkVariable<TagTypeEnum>(new NetworkVariableSettings {
+            WritePermission = NetworkVariablePermission.OwnerOnly
+        }, TagTypeEnum.None);
+        public NetworkVariableBool isReady = new NetworkVariableBool(new NetworkVariableSettings {
+            WritePermission = NetworkVariablePermission.OwnerOnly
+        }, false);
+
 
         /// <summary>
         /// using connection data from approval check to init data
@@ -51,9 +61,12 @@ namespace Player{
         public void RegisterDicClientRpc()
         {
             _playerData_dic.Add(ClientId.Value, this);
+            if(ClientId.Value == NetworkManager.Singleton.LocalClientId)
+            {
+                OnLocalPlayerDataReady?.Invoke(this);
+            }
         }
 
-        static private Dictionary<ulong, PlayerData> _playerData_dic = new Dictionary<ulong, PlayerData>();
 
         private void OnDestroy()
         {

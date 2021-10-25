@@ -422,7 +422,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 362089533}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 639707497}
+        m_TargetAssemblyTypeName: Lobby.LobbyUI, Assembly-CSharp
+        m_MethodName: OnIsReadyButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &362089533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -671,6 +683,10 @@ MonoBehaviour:
   - {fileID: 1095147623}
   - {fileID: 543898588}
   - {fileID: 1607116837}
+  _ghostButton: {fileID: 1369581652}
+  _humanButton: {fileID: 1213698008}
+  _startButton: {fileID: 1859828987}
+  _isReadyButton: {fileID: 362089533}
 --- !u!1001 &1095147620
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -914,7 +930,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1213698008}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 639707497}
+        m_TargetAssemblyTypeName: Lobby.LobbyUI, Assembly-CSharp
+        m_MethodName: OnHumanButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1213698008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1040,7 +1068,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1369581652}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 639707497}
+        m_TargetAssemblyTypeName: Lobby.LobbyUI, Assembly-CSharp
+        m_MethodName: OnGhostButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1369581652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1794,7 +1834,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1859828987}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 639707497}
+        m_TargetAssemblyTypeName: Lobby.LobbyUI, Assembly-CSharp
+        m_MethodName: OnStartButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1859828987
 MonoBehaviour:
   m_ObjectHideFlags: 0

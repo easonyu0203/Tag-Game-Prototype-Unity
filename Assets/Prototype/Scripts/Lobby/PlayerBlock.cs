@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 using MLAPI;
 using MLAPI.NetworkVariable;
 using TMPro;
@@ -36,6 +37,7 @@ namespace Lobby{
         [Header("reference")]
         [SerializeField] private GameObject _waitForPlayerText;
         [SerializeField] private GameObject _displayPlayerDataUI;
+        [SerializeField] private Image _background;
         [SerializeField] private TextMeshProUGUI _nameText;
         [SerializeField] private TextMeshProUGUI _typeText;
         [SerializeField] private TextMeshProUGUI _isReadyText;
@@ -118,7 +120,6 @@ namespace Lobby{
         /// </summary>
         private void SnapShotPlayerDataToUI()
         {
-            Debug.Log("snapShot");
             //Server Change
             UpdateUI();
 
@@ -135,15 +136,19 @@ namespace Lobby{
             {
                 case Player.TagTypeEnum.None:
                     _typeText.text = "None";
+                    _background.color = Color.white;
                     break;
                 case Player.TagTypeEnum.Human:
                     _typeText.text = "Human";
+                    _background.color = Color.blue;
                     break;
                 case Player.TagTypeEnum.Ghost:
                     _typeText.text = "Ghost";
+                    _background.color = Color.red;
                     break;
             }
             _isReadyText.text = _displayPlayerData.isReady.Value ? "True" : "False";
+
         }
 
         [ClientRpc]
