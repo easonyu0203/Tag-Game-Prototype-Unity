@@ -42,7 +42,6 @@ namespace Networking{
         public void StartClient(ConnectionData connectionData){
             NetworkManager.Singleton.NetworkConfig.ConnectionData = ConnectionData.Encode(connectionData);
             NetworkManager.Singleton.StartClient();
-            
         }
     }
 

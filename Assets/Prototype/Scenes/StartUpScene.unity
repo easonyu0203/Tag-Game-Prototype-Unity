@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.3587269, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -290,8 +290,6 @@ MonoBehaviour:
     NetworkPrefabs:
     - Prefab: {fileID: 1630132662443596679, guid: 584e321e763491247b003ddd18b7924a, type: 3}
       PlayerPrefab: 0
-    - Prefab: {fileID: 3757558852662427111, guid: 6cef1014a85cf3a43b2ca0d0b2dd9819, type: 3}
-      PlayerPrefab: 0
     PlayerPrefabHash:
       id: 0
     CreatePlayerPrefab: 0
@@ -320,49 +318,6 @@ MonoBehaviour:
     version: 1
     00000000:
       type: {class: , ns: , asm: }
---- !u!1 &1146700973
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1146700974}
-  - component: {fileID: 1146700976}
-  m_Layer: 0
-  m_Name: PlayerRoots
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1146700974
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146700973}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1146700976
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146700973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7949859918655b499e9f613214f0862, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1287115725
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,9 +377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f361a7a1791f6d4ebe98f715d7112a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxPlayerCount: 4
-  _playerRoot: {fileID: 1630132662443596679, guid: 584e321e763491247b003ddd18b7924a, type: 3}
-  _playerRootsTransform: {fileID: 1146700974}
 --- !u!114 &1287115729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,9 +398,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1287115725}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a402d85428b534745b0d0e3e1fc66b18, type: 3}
+  m_Script: {fileID: 11500000, guid: 59f6c287bc2ac4c4cb51788d2f691ec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _networkSetting: {fileID: 11400000, guid: c817ce2fe19fd80498051abc2c8e678d, type: 2}
+  _playerRoot: {fileID: 1630132662443596679, guid: 584e321e763491247b003ddd18b7924a, type: 3}
 --- !u!114 &1287115731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,7 +444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5432c27a2c3bb804cb052ebc5ac44129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NetworkType: 2
+  NetworkType: 1
 --- !u!4 &1378459469
 Transform:
   m_ObjectHideFlags: 0
