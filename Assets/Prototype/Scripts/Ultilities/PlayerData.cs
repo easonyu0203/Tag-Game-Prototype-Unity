@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -25,38 +26,42 @@ namespace Ultilities{
         public ulong ClientId => _clientId.Value;
 
         /// <summary>
-        /// Get playerData by clientId, this method will block if playerData NetworkVariable is still syncing, use with caution please
-        /// </summary>
+        /// Get playerData by clientId, this is a async call
+        /// </summary
         /// <param name="clientId">clientId</param>
         /// <returns>playerData</returns>
-        static public T GetPlayerData(ulong clientId){
+        static public async Task<T> GetPlayerDataAsync(ulong clientId){
 
-            if(Synchronizing){
-                // Block still dic sync and then get playerdata
-                Debug.LogWarning("[PlayerData] dic is syncing...");
-                SemaphoreSlim semaphore = new SemaphoreSlim(1);
-                Action onDoneSync = null;
-                onDoneSync = () => {
-                    semaphore.Release();
-                    DoneSync -= onDoneSync;
-                };
-                DoneSync += onDoneSync;
-                semaphore.Wait();
-                Debug.LogWarning("[PlayerData] dic finish syncing");
-            }
+            return await Task<T>.Run(() =>
+            {
+                if(Synchronizing){
+                    // Block still dic sync and then get playerdata
+                    Debug.LogWarning("[PlayerData] dic is syncing...");
+                    SemaphoreSlim semaphore = new SemaphoreSlim(0, 1);
+                    Action onDoneSync = null;
+                    onDoneSync = () => {
+                        semaphore.Release(1);
+                        DoneSync -= onDoneSync;
+                    };
+                    DoneSync += onDoneSync;
+                    semaphore.Wait();
+                    Debug.LogWarning("[PlayerData] dic finish syncing");
+                }
 
-            //get value
-            T _out;
-            if(_dic.TryGetValue(clientId, out _out) == false){
-                Debug.LogError($"[PlayerData] can't get {clientId} PlayerData from dic");
-            }
-            return _out;
+                //get value
+                T _out;
+                if(_dic.TryGetValue(clientId, out _out) == false){
+                    Debug.LogError($"[PlayerData] can't get {clientId} PlayerData from dic");
+                }
+                return _out;
+            });
 
         }
 
 
-        static public bool ContainClientId(ulong id){
-            return (GetPlayerData(id) != null);
+        static public async Task<bool> ContainClientId(ulong id){
+            var pData = await GetPlayerDataAsync(id);
+            return ( pData != null);
         }
 
         /// <summary>
