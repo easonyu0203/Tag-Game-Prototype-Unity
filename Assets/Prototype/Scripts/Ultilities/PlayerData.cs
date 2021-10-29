@@ -30,13 +30,11 @@ namespace Ultilities{
         /// </summary
         /// <param name="clientId">clientId</param>
         /// <returns>playerData</returns>
-        static public async Task<T> GetPlayerDataAsync(ulong clientId){
-
-            return await Task<T>.Run(() =>
-            {
+        static async public Task<T> GetPlayerDataAsync(ulong clientId){
+            return await Task<T>.Run(()=>{
                 if(Synchronizing){
                     // Block still dic sync and then get playerdata
-                    Debug.LogWarning("[PlayerData] dic is syncing...");
+                    Debug.LogWarning($"[{typeof(T)}] dic is syncing...");
                     SemaphoreSlim semaphore = new SemaphoreSlim(0, 1);
                     Action onDoneSync = null;
                     onDoneSync = () => {
@@ -45,21 +43,20 @@ namespace Ultilities{
                     };
                     DoneSync += onDoneSync;
                     semaphore.Wait();
-                    Debug.LogWarning("[PlayerData] dic finish syncing");
+                    Debug.LogWarning($"[{typeof(T)}] dic finish syncing");
                 }
 
                 //get value
                 T _out;
                 if(_dic.TryGetValue(clientId, out _out) == false){
-                    Debug.LogError($"[PlayerData] can't get {clientId} PlayerData from dic");
+                    Debug.LogError($"[{typeof(T)}] can't get {clientId} PlayerData from dic");
                 }
                 return _out;
             });
-
         }
 
 
-        static public async Task<bool> ContainClientId(ulong id){
+        static async public Task<bool> ContainClientIdAsync(ulong id){
             var pData = await GetPlayerDataAsync(id);
             return ( pData != null);
         }
@@ -83,29 +80,34 @@ namespace Ultilities{
 
         private bool _haveSetClientId = false;
         static private MyDictionary<ulong, T> _dic = new MyDictionary<ulong, T>();
-        static public bool Synchronizing => unSyncCount != 0;
+        static public bool Synchronizing  {
+            get {
+                if (unSyncCount != 0){
+                    return true;
+                }
+                return false;
+            }
+        }
         static private event Action DoneSync; 
         static private int unSyncCount = 0;
         protected NetworkVariableULong _clientId = new NetworkVariableULong(new NetworkVariableSettings{SendTickrate=-1},0);
 
         protected virtual void Awake() {
-            Debug.Log("[PlayerData] Awake");
             // just spawn this playerData, need time to connect Network
             unSyncCount--;
         }
 
         public override void NetworkStart()
         {
-            Debug.Log("[PlayerData] NetworkStart");
             // this PlayerData have sync, add to dic
-            if(ClientId == 0) Debug.LogError("[PlayerData] try to add clientId 0 to dic");
-            Debug.Log($"[PlayerData] {(T)this}");
+            if(ClientId == 0) Debug.LogError($"[{typeof(T)}, {OwnerClientId}] try to add clientId 0 to dic");
             _dic.Add(_clientId.Value, (T)this);
             unSyncCount++;
 
+
             // check is dic sync, if so invoke event
             if(Synchronizing == false){
-                Debug.Log("[PlayerData] DoneSync Event");
+                Debug.Log($"[{typeof(T)}] DoneSync Event!");
                 DoneSync?.Invoke();
             }
 

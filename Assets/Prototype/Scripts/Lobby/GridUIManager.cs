@@ -1,23 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MLAPI;
 
 using Networking;
 using System;
 
 namespace Lobby{
-    public class GridUIManager : MonoBehaviour
+    public class GridUIManager : NetworkBehaviour
     {
         [Header("Reference")]
         [SerializeField] List<CubicleUI> _cubicle_list;
 
         private void Start() {
-            Player.PlayerCredential.OnPlayerDataAdd += OnCredentailAdd;
+            if(!IsServer) return;
+            Player.PlayerRoot.OnPlayerRootAdd += OnPlyaerRootAdd;
         }
 
-        private void OnCredentailAdd(ulong clientId)
+        private void OnPlyaerRootAdd(ulong clientId)
         {
-            Debug.Log("[Grid Manager] handle Client credentailAdd");
             var cube = FindAvailableCubicle();
             cube.AssignClientId(clientId);
         }

@@ -53,6 +53,7 @@ namespace Networking{
             ConnectionData connectionData = ConnectionData.Decode(payload);
             bool approved = ApprovalChecking(connectionData);
 
+            
             // this callback control client approved or not, create default prefab or not
             callback(false, null, approved, null, null);
             

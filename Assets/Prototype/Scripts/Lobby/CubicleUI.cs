@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using TMPro;
 
@@ -27,12 +29,17 @@ namespace Lobby{
         /// <param name="id">clientId</param>
         public void AssignClientId(ulong id){
             _assignedClientId.Value = id;
+
+            // call change manaully when server
+            // if(IsServer) OnClientIdChange(id, id);
         }
 
         public StateEnum State => _state;
         public ulong AssignedClientId => _assignedClientId.Value;
 
+        [SerializeField]
         private NetworkVariableULong _assignedClientId = new NetworkVariableULong(0);
+        [SerializeField]
         private StateEnum _state = StateEnum.None;
         public enum StateEnum{
             None,
@@ -65,27 +72,44 @@ namespace Lobby{
                     break;
                 case StateEnum.DisplayPlayer:
                     _testText.text = $"Client {AssignedClientId}";
-                    DisplayPlayer_StateConfig();
+                    Task.Run(async()=>{
+                        await DisplayPlayer_StateConfigAsync();
+                    });
                     break;
             }
         }
 
-        private void DisplayPlayer_StateConfig()
+        private async Task DisplayPlayer_StateConfigAsync()
         {
-            Debug.Log("handle display player");
+            Debug.Log("Async handle display player");
 
-            var LobbyData = PlayerLobbyData.GetPlayerData(AssignedClientId);
-            var credential = PlayerCredential.GetPlayerData(AssignedClientId);
-            //handle when this client died
-            Action<ulong> onPlayerDataDestroy = null;
-            ulong currentId = AssignedClientId;
-            onPlayerDataDestroy = (clientId) => {
-                if(currentId == clientId){
-                    if(currentId != AssignedClientId) Debug.LogError("[Cubicle] id have change ? (this I not sure why)");
-                    ChangeState(StateEnum.WaitingPlayer);
+            // if playerRoot of this id doesn't exit yet, wait
+            bool haveId = false;
+            foreach(PlayerRoot pRoot in PlayerRoot.PlayerRoot_list){
+                if(pRoot.OwnerClientId == 0) continue;
+                if(pRoot.OwnerClientId == AssignedClientId){
+                    haveId = true;
+                    break;
                 }
-            };
-            PlayerLobbyData.OnPlayerDataRemove += onPlayerDataDestroy;
+            }
+            if(!haveId){
+                Debug.LogWarning($"Dont have client {AssignedClientId}. block");
+                //block thread untill have this id
+                SemaphoreSlim semaphore = new SemaphoreSlim(0, 1);
+                Action<ulong> OnAdd = null;
+                OnAdd = (id) => {
+                    if(id == AssignedClientId){
+                        semaphore.Release(1);
+                        PlayerRoot.OnPlayerRootAdd -= OnAdd;
+                    }
+                };
+                PlayerRoot.OnPlayerRootAdd += OnAdd;
+                semaphore.Wait(2000);
+                Debug.LogWarning($"Get client {AssignedClientId}. Unblock");
+            }
+
+            PlayerLobbyData LobbyData = await PlayerLobbyData.GetPlayerDataAsync(AssignedClientId);
+            // PlayerCredential credential = await PlayerCredential.GetPlayerDataAsync(AssignedClientId);
 
         }
 
@@ -102,7 +126,22 @@ namespace Lobby{
 
         private void Awake() {
             _assignedClientId.OnValueChanged += OnClientIdChange;
+            PlayerLobbyData.OnPlayerDataRemove += OnPlayerDataRemove;
             ChangeState(StateEnum.NotSyncYet);
+        }
+
+        /// <summary>
+        /// when playerRemove check if to change state
+        /// </summary>
+        private void OnPlayerDataRemove(ulong id)
+        {
+            if(IsClient) return;
+            if(State != StateEnum.DisplayPlayer) return;
+            if(AssignedClientId == id){
+                _assignedClientId.Value = 0;
+                Debug.Log($"client {id} destroy, change waiting player");
+                ChangeState(StateEnum.WaitingPlayer);
+            }
         }
 
         public override void NetworkStart()
@@ -119,12 +158,18 @@ namespace Lobby{
             // have realy change, (MLAPI is weird...)
             if(previousValue == newValue) Debug.LogWarning("[Cubicle] id change to same id");
             // check is valid change
-            if(newValue == 0) Debug.LogError("Change id to 0, its weird");
+            if(newValue == 0) {
+                ChangeState(StateEnum.WaitingPlayer);
+                return;
+            }
+
             // check id exist
-            if(PlayerCredential.ContainClientId(newValue) == false)
-                Debug.LogError($"[Cubicle] dont have client {newValue} Credential");
-            if(PlayerLobbyData.ContainClientId(newValue) == false)
-                Debug.LogError($"[Cubicle] dont have client {newValue} LobbyData");
+            // Task.Run(async ()=>{
+            //     if(await PlayerCredential.ContainClientIdAsync(newValue) == false)
+            //         Debug.LogError($"[Cubicle] dont have client {newValue} Credential");
+            //     if(await PlayerLobbyData.ContainClientIdAsync(newValue) == false)
+            //         Debug.LogError($"[Cubicle] dont have client {newValue} LobbyData");
+            // });
 
             ChangeState(StateEnum.DisplayPlayer);
         }
