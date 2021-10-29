@@ -13,7 +13,7 @@ namespace Player{
     /// </summary>
     public class PlayerCredential : PlayerData<PlayerCredential>
     {
-        private NetworkVariableString _name = new NetworkVariableString("[No Name]");
+        public NetworkVariableString _name = new NetworkVariableString("[No Name]");
         public string Name { 
             get {return _name.Value;}
             set {

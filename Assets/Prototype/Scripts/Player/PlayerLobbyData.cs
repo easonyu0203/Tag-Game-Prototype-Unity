@@ -21,6 +21,7 @@ namespace Player{
             }
         }
 
+
         public bool IsReady{
             get => _isReady.Value;
             set {
@@ -32,21 +33,21 @@ namespace Player{
         public bool IsLobbyHost{
             get => _isLobbyHost.Value;
             set {
-                CheckOwner();
+                if(!IsServer) Debug.LogError("not server try to set lobby host");
                 _isLobbyHost.Value = value;
             }
         }
 
 
-        private NetworkVariable<Game.CharaterEnum> _currentChoosedCharater = new NetworkVariable<Game.CharaterEnum>(
-            new NetworkVariableSettings {WritePermission=NetworkVariablePermission.OwnerOnly}
+        public NetworkVariable<Game.CharaterEnum> _currentChoosedCharater = new NetworkVariable<Game.CharaterEnum>(
+            new NetworkVariableSettings {WritePermission=NetworkVariablePermission.OwnerOnly},
+            Game.CharaterEnum.None
         );
-        private NetworkVariableBool _isReady = new NetworkVariableBool(
-            new NetworkVariableSettings {WritePermission=NetworkVariablePermission.OwnerOnly}
+        public NetworkVariableBool _isReady = new NetworkVariableBool(
+            new NetworkVariableSettings {WritePermission=NetworkVariablePermission.OwnerOnly},
+            false
         );
-        private NetworkVariableBool _isLobbyHost = new NetworkVariableBool(
-            new NetworkVariableSettings {WritePermission=NetworkVariablePermission.OwnerOnly}
-        );
+        public NetworkVariableBool _isLobbyHost = new NetworkVariableBool(false);
 
         private void CheckOwner(){
             if(!IsOwner) Debug.LogError("[PlayerLobbyData] not owner try to set PlayerLobbyData");

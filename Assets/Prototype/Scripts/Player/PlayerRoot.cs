@@ -42,7 +42,6 @@ namespace Player{
         }
 
         public override void NetworkStart() {
-            Debug.Log($"[PlayerRoot] Add {OwnerClientId}");
             OnPlayerRootAdd?.Invoke(OwnerClientId);
         }
 

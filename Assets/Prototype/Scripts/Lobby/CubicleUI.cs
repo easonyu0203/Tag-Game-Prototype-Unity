@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 using MLAPI;
@@ -20,6 +21,8 @@ namespace Lobby{
     {
         [Header("Reference")]
         [SerializeField] TextMeshProUGUI _testText;
+        [SerializeField] TextMeshProUGUI _displayPlayerText;
+        [SerializeField] Image _background;
 
         /// <summary>
         /// Assign a clientId to this, 
@@ -67,22 +70,35 @@ namespace Lobby{
                     NotSyncYet_StateConfig();
                     break;
                 case StateEnum.WaitingPlayer:
-                    _testText.text = "Waiting Player";
+                    _testText.text = "Waiting Player...";
                     WaitingPlayer_StateConfig();
                     break;
                 case StateEnum.DisplayPlayer:
                     _testText.text = $"Client {AssignedClientId}";
-                    Task.Run(async()=>{
+                    _testText.gameObject.SetActive(false);
+                    _displayPlayerText.gameObject.SetActive(true);
+
+                    var t = Task.Run(async()=>{
                         await DisplayPlayer_StateConfigAsync();
                     });
+                    StartCoroutine(UpDateSnapshot());
                     break;
             }
         }
 
+        private IEnumerator UpDateSnapshot(){
+            while(_displayPlayerText.text == ""){
+                SnapShot(_credential, _lobbyData);
+                yield return new WaitForSecondsRealtime(0.1f);
+            }
+        }
+
+        PlayerLobbyData _lobbyData;
+        PlayerCredential _credential;
+
         private async Task DisplayPlayer_StateConfigAsync()
         {
-            Debug.Log("Async handle display player");
-
+            Debug.Log("Handle Display Player");
             // if playerRoot of this id doesn't exit yet, wait
             bool haveId = false;
             foreach(PlayerRoot pRoot in PlayerRoot.PlayerRoot_list){
@@ -108,20 +124,63 @@ namespace Lobby{
                 Debug.LogWarning($"Get client {AssignedClientId}. Unblock");
             }
 
-            PlayerLobbyData LobbyData = await PlayerLobbyData.GetPlayerDataAsync(AssignedClientId);
-            // PlayerCredential credential = await PlayerCredential.GetPlayerDataAsync(AssignedClientId);
+            _lobbyData = await PlayerLobbyData.GetPlayerDataAsync(AssignedClientId);
+            _credential = await PlayerCredential.GetPlayerDataAsync(AssignedClientId);
 
+            HookDisplayDataChange(_credential, _lobbyData);
         }
 
+        private void HookDisplayDataChange(PlayerCredential credential, PlayerLobbyData lobbyData)
+        {
+            credential._name.OnValueChanged += (a1, a2) => SnapShot(credential, lobbyData);
+            lobbyData._currentChoosedCharater.OnValueChanged += (a1, a2) => SnapShot(credential, lobbyData);
+            lobbyData._isReady.OnValueChanged += (a1, a2) => SnapShot(credential, lobbyData);
+            lobbyData._isLobbyHost.OnValueChanged += (a1, a2) => SnapShot(credential, lobbyData);
+        }
+
+        private void SnapShot(PlayerCredential credential, PlayerLobbyData lobbyData)
+        {
+            if(credential == null || lobbyData == null){
+                Debug.LogWarning($"[SnapShot] PlayerData {AssignedClientId} is Null");
+                return;
+            }
+            string isReady = (lobbyData.IsReady) ? "True" : "False";
+            string isHost = (lobbyData.IsLobbyHost)? "True" : "False";
+            string character = "---";
+            switch(lobbyData.CurrentChoosedCharater){
+                case Game.CharaterEnum.None:
+                    character = "haven't Choose";
+                    _background.color = Color.white;
+                    break;
+                case Game.CharaterEnum.Human:
+                    character = "Human";
+                    _background.color = Color.blue;
+                    break;
+                case Game.CharaterEnum.Ghost:
+                    character = "Ghost";
+                    _background.color = Color.red;
+                    break;
+            }
+            string displayText = $"Name:\n{credential.Name}\n\nCharacter:\n{character}\n\nIsReady:\n{isReady}\n\nIsHost:\n{isHost}";
+            _displayPlayerText.text = displayText;
+            
+        }
 
         private void WaitingPlayer_StateConfig()
         {
-            Debug.Log("Handle waiting player");
+            if(_testText == null) return;
+            _displayPlayerText.text = "";
+            _testText.gameObject.SetActive(true);
+            _displayPlayerText.gameObject.SetActive(false);
+            _background.color = Color.white;
         }
 
         private void NotSyncYet_StateConfig()
         {
-            Debug.Log("Handle not sync yet");
+            if(_testText == null) return;
+            _testText.gameObject.SetActive(true);
+            _displayPlayerText.gameObject.SetActive(false);
+            _background.color = Color.white;
         }
 
         private void Awake() {
@@ -139,7 +198,6 @@ namespace Lobby{
             if(State != StateEnum.DisplayPlayer) return;
             if(AssignedClientId == id){
                 _assignedClientId.Value = 0;
-                Debug.Log($"client {id} destroy, change waiting player");
                 ChangeState(StateEnum.WaitingPlayer);
             }
         }
@@ -154,7 +212,6 @@ namespace Lobby{
 
         private void OnClientIdChange(ulong previousValue, ulong newValue)
         {
-            Debug.Log($"[Cubicle] id change {previousValue} -> {newValue}");
             // have realy change, (MLAPI is weird...)
             if(previousValue == newValue) Debug.LogWarning("[Cubicle] id change to same id");
             // check is valid change

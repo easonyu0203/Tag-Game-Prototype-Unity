@@ -31,6 +31,7 @@ namespace Ultilities{
         /// <param name="clientId">clientId</param>
         /// <returns>playerData</returns>
         static async public Task<T> GetPlayerDataAsync(ulong clientId){
+            if(clientId == 0) throw new System.Exception("want get data fo client 0");
             return await Task<T>.Run(()=>{
                 if(Synchronizing){
                     // Block still dic sync and then get playerdata
@@ -42,14 +43,20 @@ namespace Ultilities{
                         DoneSync -= onDoneSync;
                     };
                     DoneSync += onDoneSync;
-                    semaphore.Wait();
+                    semaphore.Wait(2000);
+                    while(Synchronizing){
+                        Thread.Sleep(1000);
+                        Debug.LogWarning($"[{typeof(T)}] Busy waiting on PlayerData");
+                    }
                     Debug.LogWarning($"[{typeof(T)}] dic finish syncing");
                 }
 
                 //get value
                 T _out;
-                if(_dic.TryGetValue(clientId, out _out) == false){
-                    Debug.LogError($"[{typeof(T)}] can't get {clientId} PlayerData from dic");
+                while(_dic.TryGetValue(clientId, out _out) == false){
+                    Debug.LogWarning($"[{typeof(T)}] can't get {clientId} PlayerData from dic");
+                    Debug.LogWarning($"[{typeof(T)}] Busy waiting on PlayerData");
+                    Thread.Sleep(100);
                 }
                 return _out;
             });
@@ -102,12 +109,12 @@ namespace Ultilities{
             // this PlayerData have sync, add to dic
             if(ClientId == 0) Debug.LogError($"[{typeof(T)}, {OwnerClientId}] try to add clientId 0 to dic");
             _dic.Add(_clientId.Value, (T)this);
+            Debug.Log($"[{typeof(T)}] add {_clientId.Value}");
             unSyncCount++;
 
 
             // check is dic sync, if so invoke event
             if(Synchronizing == false){
-                Debug.Log($"[{typeof(T)}] DoneSync Event!");
                 DoneSync?.Invoke();
             }
 
@@ -121,6 +128,7 @@ namespace Ultilities{
                 Debug.LogError($"[PlayerData] cant remove {_clientId.Value} from dic");
             }
 
+            Debug.Log($"[{typeof(T)}] remove {_clientId.Value}");
             // invoke ondestroy event
             OnPlayerDataRemove?.Invoke(ClientId);
         }
