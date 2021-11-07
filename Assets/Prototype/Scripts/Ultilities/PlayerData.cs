@@ -87,6 +87,7 @@ namespace Ultilities{
 
         private bool _haveSetClientId = false;
         static private MyDictionary<ulong, T> _dic = new MyDictionary<ulong, T>();
+        static public MyDictionary<ulong, T> Dic => _dic;
         static public bool Synchronizing  {
             get {
                 if (unSyncCount != 0){

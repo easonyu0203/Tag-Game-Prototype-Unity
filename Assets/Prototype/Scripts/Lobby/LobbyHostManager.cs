@@ -58,14 +58,16 @@ public class LobbyHostManager : NetworkBehaviour
     }
 
     private IEnumerator RemoveCoroutine(){
-        Debug.Log("Remove coroutine");
-        //wait till have lobby data
-        while(_playerLobbyData == null || _lobbyHostId.HasValue == false){
-            Debug.LogWarning($"Busy waitng for playerdata {_playerLobbyData}, {_lobbyHostId.HasValue}");
-            yield return new WaitForSecondsRealtime(0.1f);
+        if(_playerLobbyData != null){
+            Debug.Log("Remove coroutine");
+            //wait till have lobby data
+            while(_playerLobbyData == null || _lobbyHostId.HasValue == false){
+                Debug.LogWarning($"Busy waitng for playerdata {_playerLobbyData}, {_lobbyHostId.HasValue}");
+                yield return new WaitForSecondsRealtime(0.1f);
+            }
+            Debug.Log($"give Host to {_lobbyHostId.Value}");
+            _playerLobbyData.IsLobbyHost = true;
         }
-        Debug.Log($"give Host to {_lobbyHostId.Value}");
-        _playerLobbyData.IsLobbyHost = true;
     }
 
 

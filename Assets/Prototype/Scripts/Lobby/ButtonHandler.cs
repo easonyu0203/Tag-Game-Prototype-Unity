@@ -5,8 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using MLAPI;
 using TMPro;
-
+using MLAPI.SceneManagement;
 using Player;
+using MLAPI.Messaging;
 
 public class ButtonHandler : NetworkBehaviour
 {
@@ -51,8 +52,26 @@ public class ButtonHandler : NetworkBehaviour
     }
 
     public void OnStartButton(){
-        Debug.Log("Start Button Press");
+
+        StartPlaySceneServerRpc();
     }
+
+    [ServerRpc(RequireOwnership = false)]
+    void StartPlaySceneServerRpc(){
+        foreach (var pair in PlayerLobbyData.Dic)
+        {
+            if(pair.Value.IsReady == false)
+            {
+                if(isPromping == true){
+                    StopCoroutine("Promping");
+                }
+                StartCoroutine("Promping");     
+                return;
+            }
+        }
+        NetworkSceneManager.SwitchScene("PrototypeMainLevelScene");
+    }
+
 
     private IEnumerator CanUseStartButton(){
         while(_lobbyData == null){
@@ -69,6 +88,8 @@ public class ButtonHandler : NetworkBehaviour
             }
         };
 
+
+        Debug.Log($"host: {_lobbyData.IsLobbyHost}");
         if(_lobbyData.IsLobbyHost){
             _startButton.gameObject.SetActive(true);
         }

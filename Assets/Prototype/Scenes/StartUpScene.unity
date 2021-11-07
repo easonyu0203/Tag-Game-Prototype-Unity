@@ -286,9 +286,14 @@ MonoBehaviour:
     - MenuScene
     - LobbyScene
     - MainScene
+    - PrototypeMainLevelScene
     AllowRuntimeSceneChanges: 0
     NetworkPrefabs:
     - Prefab: {fileID: 1630132662443596679, guid: 584e321e763491247b003ddd18b7924a, type: 3}
+      PlayerPrefab: 0
+    - Prefab: {fileID: 4781319202306333171, guid: e335b7457f26742449e304eb1875b818, type: 3}
+      PlayerPrefab: 0
+    - Prefab: {fileID: 4161909408048534664, guid: 84726e25d51dab2489d2c2456f353d1c, type: 3}
       PlayerPrefab: 0
     PlayerPrefabHash:
       id: 0
@@ -444,7 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5432c27a2c3bb804cb052ebc5ac44129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NetworkType: 2
+  NetworkType: 1
 --- !u!4 &1378459469
 Transform:
   m_ObjectHideFlags: 0
