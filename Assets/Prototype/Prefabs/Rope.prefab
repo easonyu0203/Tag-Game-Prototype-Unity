@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b710528688b80d541b8b3bec43436349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 40
+  _speed: 80
   ServerRopeHitWallEvent: {fileID: 11400000, guid: 86d65471d7bbe5945ba758c0afb22365, type: 2}
   ServerRopeHitOtherPlayerEvent: {fileID: 11400000, guid: 37e9a7bf63870d64bada372753f1b98e, type: 2}
   OwnerCharacter: {fileID: 0}
