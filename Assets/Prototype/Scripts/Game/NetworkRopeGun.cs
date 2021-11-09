@@ -18,6 +18,9 @@ public class NetworkRopeGun : NetworkBehaviour
     [Header("Listening Channel")]
     [SerializeField] GameObjectEventChannelSO _serverHitWallEvent;
     [SerializeField] GameObjectEventChannelSO _serverRopeHitOtherPlayerEvent;
+    [Header("BroadCasting Channel")]
+    [SerializeField] VoidEventChannelSO _useRopeEvent;
+    [SerializeField] VoidEventChannelSO _doneUseRopeEvent;
 
     private GameObject _myRope = null;
     private Rigidbody _rigidbody;
@@ -67,6 +70,7 @@ public class NetworkRopeGun : NetworkBehaviour
 
     private IEnumerator ApplyForceToEndPoint(Vector3 endPoint)
     {
+        _useRopeEvent.RaiseEvent();
         Vector3 direction = (endPoint - transform.position).normalized;
         _rigidbody.AddForce(direction * _ropeFirstBurstVelocity, ForceMode.VelocityChange);
         yield return new WaitForFixedUpdate();
@@ -78,6 +82,7 @@ public class NetworkRopeGun : NetworkBehaviour
             
             yield return new WaitForFixedUpdate();  
         }
+        _doneUseRopeEvent.RaiseEvent();
     }
 
     /// Shoot Rope Net code 

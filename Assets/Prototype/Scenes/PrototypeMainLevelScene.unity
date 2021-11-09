@@ -2872,6 +2872,7 @@ MonoBehaviour:
   JumpBufferTime: 0.2
   FallTimeout: 0.15
   GravityScale: 3
+  MouseSensitivity: 1
   Grounded: 1
   GroundedOffset: 0.71
   GroundedRadius: 0.41

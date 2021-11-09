@@ -186,6 +186,8 @@ MonoBehaviour:
   _shootPoint: {fileID: 6045642833778907685}
   _serverHitWallEvent: {fileID: 11400000, guid: 86d65471d7bbe5945ba758c0afb22365, type: 2}
   _serverRopeHitOtherPlayerEvent: {fileID: 11400000, guid: 37e9a7bf63870d64bada372753f1b98e, type: 2}
+  _useRopeEvent: {fileID: 11400000, guid: 433f78642f5777b419c95796c5668eeb, type: 2}
+  _doneUseRopeEvent: {fileID: 11400000, guid: c4205885c21778f428d1e95da7430560, type: 2}
 --- !u!114 &4781319202306333129
 MonoBehaviour:
   m_ObjectHideFlags: 0
