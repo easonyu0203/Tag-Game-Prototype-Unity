@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 4997243207433184782}
   - component: {fileID: 4781319202306333129}
   - component: {fileID: 3099088409263707260}
+  - component: {fileID: 8613848102628682556}
   m_Layer: 6
   m_Name: CharacterBase
   m_TagString: Player
@@ -249,6 +250,18 @@ MonoBehaviour:
   GunRotatePoint: {fileID: 4781319202778051459}
   GunShootPoint: {fileID: 7075061073114806370}
   LocalCharacterReadyEvent: {fileID: 11400000, guid: 919ba52d561c5ab489a4087413a464b9, type: 2}
+--- !u!114 &8613848102628682556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4781319202306333171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63cd14c61d71e2343a0d0be1e4c9deab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4781319202579524751
 GameObject:
   m_ObjectHideFlags: 0

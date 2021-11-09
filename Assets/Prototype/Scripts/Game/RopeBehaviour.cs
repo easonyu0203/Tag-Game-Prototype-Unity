@@ -9,7 +9,7 @@ public class RopeBehaviour : MonoBehaviour
 
     [Header("BroadCast Channel")]
     public GameObjectEventChannelSO ServerRopeHitWallEvent;
-    public GameObjectEventChannelSO ServerRopeHitOtherPlayerEvent;
+    public GameObjectEventChannelSO ServerCatchHumanEvent;
 
     [HideInInspector]
     public GameObject OwnerCharacter;
@@ -61,8 +61,8 @@ public class RopeBehaviour : MonoBehaviour
         ServerRopeHitWallEvent.RaiseEvent(this.gameObject);
     }
 
-    public void OnHitPlayer(){
-
+    public void GhostCatchHuman(GameObject catchedHuman){
+        ServerCatchHumanEvent.RaiseEvent(catchedHuman);
     }
     
 }

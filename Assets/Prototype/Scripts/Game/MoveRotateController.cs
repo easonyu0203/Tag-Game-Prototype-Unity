@@ -23,6 +23,7 @@ namespace Game{
 		[Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
 		public float FallTimeout = 0.15f;
 		public float GravityScale = 1.0f;
+		[Range(0.1f, 5.0f)] public float MouseSensitivity = 1.0f;
 		[Header("Player Grounded")]
 		public bool Grounded = true;
 		[Tooltip("Useful for rough ground")]
@@ -197,8 +198,8 @@ namespace Game{
 			// if there is an input and camera position is not fixed
 			if (look.sqrMagnitude >= _threshold)
 			{
-				_cinemachineTargetYaw += look.x * Time.deltaTime;
-				_cinemachineTargetPitch += look.y * Time.deltaTime;
+				_cinemachineTargetYaw += look.x * Time.deltaTime * MouseSensitivity;
+				_cinemachineTargetPitch += look.y * Time.deltaTime * MouseSensitivity;
 			}
 
 			// clamp our rotations so our values are limited 360 degrees

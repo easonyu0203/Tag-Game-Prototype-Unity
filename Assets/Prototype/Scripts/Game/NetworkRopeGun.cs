@@ -60,7 +60,6 @@ public class NetworkRopeGun : NetworkBehaviour
     private void HandleLocalRopeHitWallClientRpc(){
         _myRope.GetComponent<RopeBehaviour>().StopMoving();
         if(IsOwner){
-            Debug.Log("Apply force to local player");
             Vector3 endpoint = _myRope.GetComponent<RopeBehaviour>().EndPoint;
             StartCoroutine(ApplyForceToEndPoint(endpoint));
         }
@@ -85,7 +84,6 @@ public class NetworkRopeGun : NetworkBehaviour
 
     [ServerRpc]
     private void RequestShootRopeServerRpc(Vector3 ropeDirection){
-        Debug.Log("Server get shoot request");
         HandlerShootRopeClientRpc(ropeDirection);
         if(IsHost == false){
             if(_myRope != null){
@@ -98,7 +96,6 @@ public class NetworkRopeGun : NetworkBehaviour
 
     [ClientRpc]
     private void HandlerShootRopeClientRpc(Vector3 ropeDirection){
-        Debug.Log("Client handle shoot rope");
         if(_myRope != null){
             Destroy(_myRope);
         }
@@ -109,7 +106,6 @@ public class NetworkRopeGun : NetworkBehaviour
     /// Cancel Rope Net code
     [ServerRpc]
     private void RequestCancelRopeServerRpc(){
-        Debug.Log("Server get cancel request");
         HandleCancelRopeClientRpc();
         if(IsHost == false){
             if(_myRope != null){
@@ -121,7 +117,6 @@ public class NetworkRopeGun : NetworkBehaviour
 
     [ClientRpc]
     private void HandleCancelRopeClientRpc(){
-        Debug.Log("Client handle cancel rope");
         if(_myRope != null){
             Destroy(_myRope);
             _myRope = null;
