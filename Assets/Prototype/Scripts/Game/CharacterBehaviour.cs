@@ -7,7 +7,8 @@ public class CharacterBehaviour : NetworkBehaviour
 {
     [Header("Reference")]
     public GameObject CameraFollowTarget;
-    public GameObject Gun;
+    public GameObject GunRotatePoint;
+    public GameObject GunShootPoint;
 
     [Header("Broacast Channels")]
     public GameObjectEventChannelSO LocalCharacterReadyEvent;

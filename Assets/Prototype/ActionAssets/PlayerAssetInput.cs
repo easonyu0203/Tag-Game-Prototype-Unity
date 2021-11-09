@@ -33,6 +33,8 @@ using UnityEngine.InputSystem;
 			JumpInput(value.isPressed);
 		}
 
+		
+
 		public void OnFire(InputValue value)
 		{
 			FireInput(value.isPressed);

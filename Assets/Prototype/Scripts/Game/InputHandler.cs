@@ -13,11 +13,13 @@ namespace Game{
         private bool _isLocalCharacterReady = false;
 
         private MoveRotateController _moveRotateController;
+        private RopeGunController _ropeGunController;
         private PlayerAssetInput _input;
 
         private void Awake() {
             _input = GetComponent<PlayerAssetInput>();
             _moveRotateController = GetComponent<MoveRotateController>();
+            _ropeGunController = GetComponent<RopeGunController>();
 
         }
 
@@ -40,6 +42,14 @@ namespace Game{
             if(_isLocalCharacterReady == false) return;
             
             _moveRotateController.Jump();
+        }
+
+        private void OnFire(){
+            _ropeGunController.Shoot();
+        }
+
+        private void OnCancelFire(){
+            _ropeGunController.CancelShoot();
         }
 
         private void LateUpdate() {

@@ -34,14 +34,15 @@ namespace Game{
 
         private void SpawnCharacter(){
             int i = 0;
+            int j = 0;
             foreach (var pair in PlayerLobbyData.Dic)
             {
                 GameObject cha;
                 if(pair.Value.CurrentChoosedCharater == CharaterEnum.Human){
-                    cha = Instantiate(_humanPrefab, _HumanSpawnPoints[i].position, _humanPrefab.transform.rotation);
+                    cha = Instantiate(_humanPrefab, _HumanSpawnPoints[i].position, _humanPrefab.transform.rotation); i++;
                 }
                 else{
-                    cha = Instantiate(_ghostPrefab, _ghostSpawnPoints[i].position, _ghostPrefab.transform.rotation);
+                    cha = Instantiate(_ghostPrefab, _ghostSpawnPoints[i].position, _ghostPrefab.transform.rotation); j++;
                 }
                 cha.GetComponent<NetworkObject>().SpawnAsPlayerObject(pair.Key);
 

@@ -291,7 +291,7 @@ MonoBehaviour:
     NetworkPrefabs:
     - Prefab: {fileID: 1630132662443596679, guid: 584e321e763491247b003ddd18b7924a, type: 3}
       PlayerPrefab: 0
-    - Prefab: {fileID: 4781319202306333171, guid: e335b7457f26742449e304eb1875b818, type: 3}
+    - Prefab: {fileID: 4454013247467830111, guid: 816058fbec2fd294da9bdfda514b65ab, type: 3}
       PlayerPrefab: 0
     - Prefab: {fileID: 4161909408048534664, guid: 84726e25d51dab2489d2c2456f353d1c, type: 3}
       PlayerPrefab: 0
