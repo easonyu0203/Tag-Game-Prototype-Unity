@@ -46,21 +46,24 @@ public class NetworkRopeGun : NetworkBehaviour
     {
         // tell this client that his character's rope hit wall
         if(rope != _myRope) return;
-        ClientRpcParams clientRpcParams = new ClientRpcParams
-        {
-            Send = new ClientRpcSendParams
-            {
-                TargetClientIds = new ulong[]{OwnerClientId}
-            }
-        };
-        HandleLocalRopeHitWallClientRpc(clientRpcParams);
+        // ClientRpcParams clientRpcParams = new ClientRpcParams
+        // {
+        //     Send = new ClientRpcSendParams
+        //     {
+        //         TargetClientIds = new ulong[]{OwnerClientId}
+        //     }
+        // };
+        HandleLocalRopeHitWallClientRpc();
     }
 
     [ClientRpc]
-    private void HandleLocalRopeHitWallClientRpc(ClientRpcParams clientRpcParams){
-        Debug.Log("Apply force to local player");
-        Vector3 endpoint = _myRope.GetComponent<RopeBehaviour>().EndPoint;
-        StartCoroutine(ApplyForceToEndPoint(endpoint));
+    private void HandleLocalRopeHitWallClientRpc(){
+        _myRope.GetComponent<RopeBehaviour>().StopMoving();
+        if(IsOwner){
+            Debug.Log("Apply force to local player");
+            Vector3 endpoint = _myRope.GetComponent<RopeBehaviour>().EndPoint;
+            StartCoroutine(ApplyForceToEndPoint(endpoint));
+        }
     }
 
     private IEnumerator ApplyForceToEndPoint(Vector3 endPoint)
@@ -70,7 +73,7 @@ public class NetworkRopeGun : NetworkBehaviour
         yield return new WaitForFixedUpdate();
         while(_myRope != null){
             direction = (endPoint - transform.position).normalized;
-            direction = new Vector3(direction.x, 0, direction.z).normalized;
+            direction = new Vector3(direction.x, Mathf.Max(0, (direction.y / 2f)), direction.z).normalized;
             _rigidbody.AddForce(direction * _ropeAccelerate, ForceMode.Acceleration);
             _rigidbody.AddForce(Vector3.down * 9.8f * _additiveGravityScale, ForceMode.Acceleration);
             

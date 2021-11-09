@@ -52,6 +52,10 @@ public class RopeBehaviour : MonoBehaviour
         }
     }
 
+    public void StopMoving(){
+        _stopMoving = true;
+    }
+
     public void OnHitWall(){
         _stopMoving = true;
         ServerRopeHitWallEvent.RaiseEvent(this.gameObject);
