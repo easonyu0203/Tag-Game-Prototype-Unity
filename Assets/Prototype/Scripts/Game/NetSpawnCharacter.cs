@@ -12,6 +12,7 @@ namespace Game{
         
         [SerializeField] GameObject _ghostPrefab;
         [SerializeField] GameObject _humanPrefab;
+        [SerializeField] GameObject _HitFXPrefab;
         [SerializeField] List<Transform> _ghostSpawnPoints;
         [SerializeField] List<Transform> _HumanSpawnPoints;
 
@@ -34,6 +35,8 @@ namespace Game{
         {
             // teleport player to spawn point
             Debug.Log("ReSpawn Catched Human");
+            GameObject hitFx = Instantiate(_HitFXPrefab, catchedHuman.transform.position, _HitFXPrefab.transform.rotation);
+            hitFx.GetComponent<NetworkObject>().Spawn();
             catchedHuman.GetComponent<NetworkTeleportController>().Teleport(_HumanSpawnPoints[0].position);
         }
 

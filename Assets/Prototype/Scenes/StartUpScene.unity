@@ -295,6 +295,8 @@ MonoBehaviour:
       PlayerPrefab: 0
     - Prefab: {fileID: 4161909408048534664, guid: 84726e25d51dab2489d2c2456f353d1c, type: 3}
       PlayerPrefab: 0
+    - Prefab: {fileID: 1965343156803978, guid: d5ad62e07ba1d0545b709c512bdfba7f, type: 3}
+      PlayerPrefab: 0
     PlayerPrefabHash:
       id: 0
     CreatePlayerPrefab: 0
@@ -449,7 +451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5432c27a2c3bb804cb052ebc5ac44129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NetworkType: 1
+  NetworkType: 2
 --- !u!4 &1378459469
 Transform:
   m_ObjectHideFlags: 0
